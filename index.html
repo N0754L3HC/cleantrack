@@ -57,7 +57,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .tabbar a svg{width:22px;height:22px;stroke-width:2}
 .tabbar a.active{color:var(--b600)}
 .tabbar a.active svg{stroke-width:2.4}
-.tabbar a.active::before{content:'';position:absolute;top:-6px;width:26px;height:3px;border-radius:3px;background:var(--b500)}
 
 /* FAB */
 .fab{position:fixed;right:18px;bottom:calc(var(--nav-h) + var(--safe-b) + 14px);z-index:55;width:56px;height:56px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--b500),var(--b700));color:#fff;font-size:28px;font-weight:400;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 24px -6px rgba(5,150,105,.55),0 4px 10px rgba(5,150,105,.35);transition:transform .18s,box-shadow .18s}
@@ -67,12 +66,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 /* ─────────────────────────── STAT CARDS ─────────────────────────── */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .stat{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--sh);border:1px solid var(--border2);position:relative;overflow:hidden}
-.stat .si{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.stat .si{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:var(--b50);color:var(--b600)}
 .stat .si svg{width:19px;height:19px;stroke-width:2.2}
-.stat.g .si{background:var(--b50);color:var(--b600)}
-.stat.b .si{background:var(--blue-bg);color:var(--blue)}
-.stat.a .si{background:var(--amber-bg);color:var(--amber)}
-.stat.r .si{background:var(--red-bg);color:var(--red)}
 .stat .sl{font-size:12px;color:var(--t500);font-weight:600;margin-bottom:5px}
 .stat .sv{font-size:25px;font-weight:800;letter-spacing:-.7px;line-height:1}
 .stat .ss{font-size:11.5px;color:var(--t400);margin-top:6px;font-weight:500}
@@ -147,7 +142,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .dp .dp-d{font-size:11px;font-weight:700;color:var(--t500);text-transform:uppercase;letter-spacing:.4px}
 .dp .dp-n{font-size:18px;font-weight:800;color:var(--t900);margin-top:2px;line-height:1}
 .dp .dp-c{position:absolute;top:5px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--b500)}
-.dp.sel{background:linear-gradient(135deg,var(--b600),var(--b800));border-color:var(--b700)}
+.dp.sel{background:var(--b600);border-color:var(--b700)}
 .dp.sel .dp-d,.dp.sel .dp-n{color:#fff}
 .dp.sel .dp-c{background:#fff}
 .dp.today:not(.sel){border-color:var(--b400)}
@@ -160,7 +155,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .day-body{display:flex;flex-direction:column;gap:11px}
 
 /* job card */
-.jc{background:var(--card);border-radius:var(--r-sm);border:1px solid var(--border2);border-left:4px solid #ccc;box-shadow:var(--sh-sm);padding:13px 14px;cursor:pointer;position:relative;transition:.15s}
+.jc{background:var(--card);border-radius:var(--r-sm);border:1px solid var(--border2);box-shadow:var(--sh-sm);padding:13px 14px;cursor:pointer;position:relative;transition:.15s}
 .jc:active{transform:scale(.99)}
 .jc .jc-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
 .jc .jc-time{font-size:13px;font-weight:800;color:var(--t900)}
@@ -180,7 +175,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .list-head .btn{display:none}
 .staff-grid{display:grid;grid-template-columns:1fr;gap:14px}
 .sc{background:var(--card);border-radius:var(--r);border:1px solid var(--border2);box-shadow:var(--sh);overflow:hidden}
-.sc .sc-bar{height:5px}
+.sc .sc-bar{display:none}
 .sc .sc-body{padding:16px 18px}
 .sc .sc-top{display:flex;align-items:center;gap:13px;margin-bottom:15px}
 .sc .sc-av{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0}
@@ -209,7 +204,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .cc{background:var(--card);border-radius:var(--r);border:1px solid var(--border2);box-shadow:var(--sh);overflow:hidden}
 .cc .cc-body{padding:16px 18px}
 .cc .cc-top{display:flex;align-items:flex-start;gap:13px}
-.cc .cc-ic{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--b400),var(--b600));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0}
+.cc .cc-ic{width:44px;height:44px;border-radius:13px;background:var(--b600);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0}
 .cc .cc-info{flex:1;min-width:0}
 .cc .cc-nm{font-size:16px;font-weight:800;letter-spacing:-.3px}
 .cc .cc-addr{font-size:13px;color:var(--t500);margin-top:2px;line-height:1.4}
@@ -633,8 +628,8 @@ function fabAction(){
 }
 
 // ═══════════════════════ BADGES ═══════════════════════
-function badge(s){const m={scheduled:'b-blue','in-progress':'b-amber',completed:'b-green',cancelled:'b-gray'};return `<span class="b ${m[s]||'b-gray'}">${esc(s)}</span>`}
-function payBadge(s){const m={paid:'b-green',invoiced:'b-amber',unpaid:'b-red'};return `<span class="b ${m[s]||'b-gray'}">${esc(s)}</span>`}
+function badge(s){const m={completed:'b-green'};return `<span class="b ${m[s]||'b-gray'}">${esc(s)}</span>`}
+function payBadge(s){const m={paid:'b-green',unpaid:'b-red'};return `<span class="b ${m[s]||'b-gray'}">${esc(s)}</span>`}
 function money(n){return '&pound;'+Number(n||0).toFixed(2)}
 function money0(n){return '&pound;'+Number(n||0).toFixed(0)}
 
@@ -761,7 +756,7 @@ function renderJobs(){
       const cl=clients.find(c=>c.id===j.clientId),st=staff.find(s=>s.id===j.staffId);
       const canDone=j.status!=='completed';
       const canPay=j.paymentStatus!=='paid'&&j.status==='completed';
-      html+=`<div class="jc" style="border-left-color:${st?st.color:'#CBD5E1'}" onclick="openJobModal('${j.id}')">
+      html+=`<div class="jc" onclick="openJobModal('${j.id}')">
         <div class="jc-top"><span class="jc-time">${esc(j.startTime)} · ${j.duration}h</span><span class="jc-amt">${money0(j.amount)}</span></div>
         <div class="jc-client">${esc(cl?cl.name:'?')}</div>
         <div class="jc-row"><span class="jc-who"><span class="chip-dot" style="background:${st?st.color:'#ccc'}"></span>${st?esc(st.name.split(' ')[0]):'Unassigned'}</span>${badge(j.status)}</div>
@@ -796,7 +791,7 @@ function renderStaff(){
         <div class="sc-days">${DAYS.map(d=>`<div class="sd${avail.includes(d)?' on':''}">${d[0]}</div>`).join('')}</div>
         <div class="sc-util">
           <div class="ul"><span class="ut">Week utilisation</span><span class="uv">${util.toFixed(0)}%</span></div>
-          <div class="ubar"><div class="ufill" style="width:${util}%;background:${util>85?'var(--amber)':s.color}"></div></div>
+          <div class="ubar"><div class="ufill" style="width:${util}%;background:var(--b500)"></div></div>
         </div>
         <div class="sc-meta">
           <div class="sm"><b>${wh}h</b><span>This week</span></div>
