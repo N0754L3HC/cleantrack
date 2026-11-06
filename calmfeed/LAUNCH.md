@@ -20,8 +20,10 @@ calmfeed/
    - Optional **Founding member: £19 one-off, lifetime** (limit it to the first 20 buyers; good for the first-hour push)
 5. Test: load `extension/` unpacked → click the icon → **Go Pro** → the Stripe checkout should open.
 
-### 2. Landing page (5 min)
-Host the `site/` folder on Vercel, Netlify Drop (drag and drop the folder), or GitHub Pages. You need its URL for the store's privacy policy field: `https://YOUR-SITE/privacy.html`.
+### 2. Landing page: live ✅
+- Site: https://calmfeed-nu.vercel.app
+- Privacy policy (paste into the store form): https://calmfeed-nu.vercel.app/privacy.html
+- Hosted on Vercel, project `calmfeed`, built from `calmfeed/site`.
 
 ### 3. Chrome Web Store (10 min, then review)
 1. https://chrome.google.com/webstore/devconsole: pay the one-off **$5** developer fee.
@@ -32,7 +34,7 @@ Host the `site/` folder on Vercel, Netlify Drop (drag and drop the folder), or G
    - Host permission (linkedin.com): "Needed to hide posts on the LinkedIn feed page."
    - Storage: "Saves the user's filter settings locally."
    - Data usage: tick nothing collected; certify the three statements.
-   - Privacy policy URL: your `/privacy.html`.
+   - Privacy policy URL: https://calmfeed-nu.vercel.app/privacy.html
 5. Submit. Review usually takes 1–3 days. Until it's approved, people install from the zip on the landing page.
 6. When it's live, paste the store URL into `STORE_URL` at the bottom of `site/index.html` and redeploy. Every button then points to the store.
 
