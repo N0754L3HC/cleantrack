@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Calmfeed</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header>
+  <div class="brand"><img src="icons/icon32.png" alt="" width="20" height="20"> Calmfeed <span id="proBadge" class="badge hidden">PRO</span></div>
+  <label class="switch" title="Turn Calmfeed on/off"><input type="checkbox" id="enabled"><span></span></label>
+</header>
+
+<section class="stats">
+  <div><b id="today" class="num">0</b><span>hidden today</span></div>
+  <div><b id="total" class="num">0</b><span>hidden all time</span></div>
+</section>
+
+<section id="upsell" class="upsell hidden">
+  <div>
+    <b>Unlock the full clean-up</b>
+    <p>Hide "X liked this", polls, job changes, videos, the sidebar, and mute any keyword.</p>
+  </div>
+  <button id="upgradeBtn" class="primary">Go Pro · <span id="price"></span></button>
+</section>
+
+<h2>Hide</h2>
+<ul id="filters"></ul>
+
+<h2>Mute keywords <span id="kwLock" class="lock hidden">PRO</span></h2>
+<form id="kwForm" class="kw-form">
+  <input id="kwInput" placeholder='e.g. "thrilled to announce", crypto' maxlength="60" autocomplete="off">
+  <button class="ghost" type="submit">Add</button>
+</form>
+<div id="kwList" class="chips"></div>
+
+<footer>
+  <a href="#" id="loginLink">Already paid? Log in</a>
+  <a href="#" id="manageLink" class="hidden">Manage subscription</a>
+</footer>
+<script src="config.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
