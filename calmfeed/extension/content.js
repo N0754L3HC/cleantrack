@@ -67,6 +67,11 @@
   }
 
   // ---- finding posts ----
+  // Two ways, so a LinkedIn redesign doesn't break us:
+  //  1. Known markup (fast, works on today's LinkedIn).
+  //  2. Layout: find a label like "Promoted", climb up to the element that sits in
+  //     a list of several big blocks (the feed), and treat that block as the post.
+  //     Every other block in that list is then a post too.
   const POST_SELECTOR = [
     '[data-id^="urn:li:activity"]',
     '[data-id^="urn:li:aggregate"]',
@@ -77,22 +82,83 @@
     '[data-view-name="feed-full-update"]'
   ].join(',');
 
+  const MIN_POST_PX = 120;   // a feed post is at least this tall
+  const MAX_POST_PX = 2600;  // anything taller is probably the whole feed, not one post
+  const feedLists = new Set();
+
   function onFeed() {
     return location.pathname === '/' || location.pathname.startsWith('/feed');
   }
 
-  function findPosts() {
-    const found = document.querySelectorAll(POST_SELECTOR);
-    const outer = new Set();
-    for (const el of found) {
-      const top = el.closest('.occludable-update') || el;
-      outer.add(top);
+  function feedRoot() {
+    return document.querySelector('main') || document.body;
+  }
+
+  function isAnchor(t) {
+    return isPromoted(t) || SUGGESTED_EXACT.has(t) || POLL_RE.test(t) ||
+      (t.length < 120 && (ACTIVITY_RE.test(t) || REPOST_RE.test(t) || CELEBRATION_RE.test(t)));
+  }
+
+  function isBlock(el) {
+    return el.classList.contains(HIDDEN) || el.offsetHeight >= MIN_POST_PX;
+  }
+
+  function blockCount(list) {
+    let n = 0;
+    for (const c of list.children) if (isBlock(c) && ++n >= 3) break;
+    return n;
+  }
+
+  // Climb from a label to the post that contains it.
+  function postFromAnchor(textNode, root) {
+    let el = textNode.parentElement;
+    while (el && el !== root && el.parentElement) {
+      const list = el.parentElement;
+      if (isBlock(el) && blockCount(list) >= 3) {
+        if (el.offsetHeight > MAX_POST_PX) return null;
+        feedLists.add(list);
+        return el;
+      }
+      el = list;
     }
-    // keep only the outermost matches
-    return [...outer].filter(el => {
-      const parent = el.parentElement && el.parentElement.closest(POST_SELECTOR);
-      return !parent || !outer.has(parent.closest('.occludable-update') || parent);
+    return null;
+  }
+
+  function outermost(set) {
+    return [...set].filter(el => {
+      for (let p = el.parentElement; p; p = p.parentElement) if (set.has(p)) return false;
+      return true;
     });
+  }
+
+  function findPosts() {
+    const posts = new Set();
+
+    // 1. known markup
+    for (const el of document.querySelectorAll(POST_SELECTOR)) {
+      posts.add(el.closest('.occludable-update') || el);
+    }
+
+    // 2. labels -> posts (only for labels not already inside a known post)
+    const root = feedRoot();
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walker.nextNode())) {
+      const t = n.data.trim();
+      if (!t || t.length > 160 || !isAnchor(t)) continue;
+      const parent = n.parentElement;
+      if (!parent || parent.closest(POST_SELECTOR) || parent.closest('.' + HIDDEN)) continue;
+      const post = postFromAnchor(n, root);
+      if (post) posts.add(post);
+    }
+
+    // 3. every block in a feed list we've found is a post (for keywords/videos)
+    for (const list of feedLists) {
+      if (!list.isConnected) { feedLists.delete(list); continue; }
+      for (const c of list.children) if (isBlock(c)) posts.add(c);
+    }
+
+    return outermost(posts);
   }
 
   // ---- stats ----
@@ -113,11 +179,25 @@
     }, 800);
   }
 
+  // ---- health: lets the popup say "working" or "can't see your feed" ----
+  let lastHealth = -1;
+  let healthTimer = null;
+  function reportHealth(count) {
+    if (count === lastHealth) return;
+    lastHealth = count;
+    clearTimeout(healthTimer);
+    healthTimer = setTimeout(() => {
+      chrome.storage.local.set({ health: { posts: count, at: Date.now() } });
+    }, 1500);
+  }
+
   // ---- main pass ----
   function scan(force) {
     document.documentElement.classList.toggle('calmfeed-no-aside', !!(settings.enabled && settings.pro && settings.filters.sidebar && onFeed()));
     if (!onFeed()) return;
-    for (const post of findPosts()) {
+    const posts = findPosts();
+    reportHealth(posts.length);
+    for (const post of posts) {
       const len = String(post.textContent.length);
       if (!force && post.dataset.calmfeedLen === len) continue;
       post.dataset.calmfeedLen = len;

@@ -21,6 +21,20 @@ function render() {
   $('today').textContent = stats.day === today ? stats.today || 0 : 0;
   $('total').textContent = stats.total || 0;
 
+  // Feed health (only shown if the feed was open in the last 30 minutes)
+  const h = state.health;
+  const hp = $('health');
+  if (h && Date.now() - h.at < 30 * 60 * 1000) {
+    hp.classList.remove('hidden');
+    hp.classList.toggle('ok', h.posts > 0);
+    hp.classList.toggle('warn', h.posts === 0);
+    hp.textContent = h.posts > 0
+      ? `Working: checking ${h.posts} posts on your feed`
+      : '⚠ Can\'t see your feed yet. Scroll it a little; if this stays, LinkedIn may have changed.';
+  } else {
+    hp.classList.add('hidden');
+  }
+
   const filters = { ...CALMFEED.DEFAULTS.filters, ...(state.filters || {}) };
   const ul = $('filters');
   ul.textContent = '';
@@ -105,5 +119,5 @@ chrome.storage.local.get(null, d => {
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') return;
   for (const k in changes) state[k] = changes[k].newValue;
-  if (changes.pro || changes.stats) render();
+  if (changes.pro || changes.stats || changes.health) render();
 });
